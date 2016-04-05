@@ -9,8 +9,8 @@
 
 	<security:http auto-config="true" use-expressions="true">
 		<security:form-login login-page="/login" default-target-url="/home"/>
-<!-- 		<security:csrf disabled="true"/> -->
-		<security:logout logout-success-url="/login?logout=true"
+		<security:csrf disabled="true"/>
+		<security:logout logout-url="/logout" logout-success-url="/login" 
 			invalidate-session="true"
 			delete-cookies="JSESSIONID" />
 		<security:intercept-url pattern="/login"
