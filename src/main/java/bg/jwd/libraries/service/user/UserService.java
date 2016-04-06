@@ -14,7 +14,11 @@ public interface UserService {
 	
 	LibraryUser getUserById(long id);
 	
-	boolean adminEditUserById(Long id, int status);
+	boolean adminEditUserById(long id, int status);
 	
 	boolean editMyProfile(long id, LibraryUser user);
+	
+	boolean delteProfile(long id);
+	
+	
 }

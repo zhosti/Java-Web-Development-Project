@@ -78,7 +78,7 @@
 			</form:form>
         </td>
         <td>
-	        <form:form name="delete" class="form-delete" id="update-form" action="/libraries/delete/${u.getId()}" modelAttribute="users" method="POST">
+	        <form:form name="delete" class="form-delete" id="update-form" action="/libraries/deleteProfile/${u.getId()}" modelAttribute="users" method="POST">
 				<button type="submit" class="btn btn-danger">Delete</button>
 			</form:form>
         </td>

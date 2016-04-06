@@ -67,7 +67,7 @@ public class UserDaoImpl implements UserDao{
 		return users;
 	}
 	@Override
-	public LibraryUser getUserById(Long id) {
+	public LibraryUser getUserById(long id) {
 		Query query = entityManager.createNativeQuery("SELECT * FROM LIBRARY_USERS WHERE id = ?", LibraryUser.class);
 		query.setParameter(1, id);
 
@@ -78,7 +78,7 @@ public class UserDaoImpl implements UserDao{
 	
 	@Override
 	@Transactional
-	public boolean adminEditUserById(Long id, int status) {
+	public boolean adminEditUserById(long id, int status) {
 		entityManager.createNativeQuery("UPDATE LIBRARY_USERS SET STATUS=? WHERE id=?")
 			.setParameter(1, status)
 			.setParameter(2, id)
@@ -96,6 +96,20 @@ public class UserDaoImpl implements UserDao{
 		.setParameter(3, user.getBirthDate())
 		.setParameter(4, id)
 		.executeUpdate();
+		
+		return true;
+	}
+	
+	@Override
+	@Transactional
+	public boolean deleteProfile(long id) {
+		entityManager.createNativeQuery("DELETE FROM USER_AUTHORITY WHERE USER_ID = ?")
+			.setParameter(1, id)
+			.executeUpdate();
+		
+		entityManager.createNativeQuery("DELETE FROM LIBRARY_USERS WHERE ID=?")
+			.setParameter(1, id)
+			.executeUpdate();
 		
 		return true;
 	}

@@ -18,22 +18,29 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import bg.jwd.libraries.entity.book.Book;
+import bg.jwd.libraries.entity.user.LibraryUser;
 import bg.jwd.libraries.service.book.BookService;
+import bg.jwd.libraries.service.user.UserService;
 
 @Controller
 public class BookController {
+	
 	@Autowired
 	private BookService bookService;
+	
+	@Autowired
+	private UserService userService;
 	
 	@RequestMapping(value = "/books", method = RequestMethod.GET)
 	public String home(Locale locale, Model model) {
 
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String name = auth.getName();
+		LibraryUser user = userService.getUserByUsername(name);
 		
 		model.addAttribute("username", name);
-		List<Book> books = bookService.getBooks();
 		model.addAttribute("books",bookService.getBooks());
+		model.addAttribute("id", user.getId());
 		
 		return "bookRegister";
 	}

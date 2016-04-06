@@ -14,9 +14,11 @@ public interface UserDao {
 	
 	List<LibraryUser> getUsers();
 	
-	LibraryUser getUserById(Long id);
+	LibraryUser getUserById(long id);
 	
-	boolean adminEditUserById(Long id, int status);
+	boolean adminEditUserById(long id, int status);
 	
 	boolean editMyProfile(long id, LibraryUser user);
+	
+	boolean deleteProfile(long id);
 }

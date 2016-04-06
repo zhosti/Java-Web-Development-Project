@@ -35,7 +35,7 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	public boolean adminEditUserById(Long id, int status) {
+	public boolean adminEditUserById(long id, int status) {
 		userDao.adminEditUserById(id, status);
 		return true;
 	}
@@ -43,6 +43,12 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public boolean editMyProfile(long id, LibraryUser user) {
 		userDao.editMyProfile(id, user);
+		return true;
+	}
+
+	@Override
+	public boolean delteProfile(long id) {
+		userDao.deleteProfile(id);
 		return true;
 	}
 }

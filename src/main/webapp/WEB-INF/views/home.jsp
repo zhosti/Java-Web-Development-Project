@@ -34,7 +34,7 @@
         <li class="active"><a href="/home">Home <span class="sr-only">(current)</span></a></li>
         <li><a href="/libraries/books">Books</a></li>
         <li><a href="/libraries/users">Users</a></li>
-        <li id="greeting"><a href="/home">Hello, <c:out value="${username}" /></a><li>
+        <li id="greeting"><a href="/libraries/editProfile/${id }">Hello, <c:out value="${username}" /></a><li>
         <li id="logout"><a href="logout">Logout</a>
       </ul>  
     </div><!-- /.navbar-collapse -->

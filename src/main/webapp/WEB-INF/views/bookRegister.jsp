@@ -41,7 +41,8 @@
       <ul class="nav navbar-nav">
         <li class="active"><a href="/libraries/home">Home <span class="sr-only">(current)</span></a></li>
         <li><a href="/libraries/books">Books</a></li>
-        <li id="greeting"><a href="#">Hello, <c:out value="${username}" /></a><li>
+        <li><a href="/libraries/users">Users</a></li>
+        <li id="greeting"><a href="/libraries/editProfile/${id }">Hello, <c:out value="${username}" /></a><li>
         <li id="logout"><a href="logout">Logout</a>
       </ul>  
     </div><!-- /.navbar-collapse -->

@@ -86,6 +86,7 @@ public class UserController {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String name = auth.getName();
 		LibraryUser user = userService.getUserByUsername(name);
+		
 		model.addAttribute("username", name);
 		model.addAttribute("id", user.getId());
 		
@@ -149,8 +150,6 @@ public class UserController {
 		java.util.Date date = new SimpleDateFormat("yyyy-MM-dd").parse(birthDate);
 	    java.sql.Date sqlDate = new java.sql.Date(date.getTime());
 	    
-	   
-	    
 	    user.setUsername(username);
 	    user.setPassword(password);
 	    user.setBirthDate(sqlDate);
@@ -159,6 +158,17 @@ public class UserController {
 	    userService.editMyProfile(user.getId(), user);
 	    
 	    return "redirect:" + "/logout";
+	}
+	
+	@RequestMapping(value = "/deleteProfile/{id}", method = RequestMethod.POST)
+	public String deleteBook(@PathVariable long id, 
+	    HttpServletRequest request, Model model) throws ParseException {
+	
+		LibraryUser book = userService.getUserById(id);
+		
+		userService.delteProfile(book.getId());
+		
+		return "redirect:"+ "/users";
 	}
 	
 	private void encryptPasswordMD5(LibraryUser user) throws UnsupportedEncodingException, NoSuchAlgorithmException{
