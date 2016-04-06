@@ -1,5 +1,6 @@
 package bg.jwd.libraries.entity.user;
 
+import java.sql.Date;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -26,16 +27,13 @@ public class LibraryUser {
 	private String password;
 	
 	@Column(name = "STATUS")
-	private String status;
-	
-	@Column(name = "CREATED_BY")
-	private long createdBy;
+	private int status;
 	
 	@Column(name = "PID")
 	private String pid;
 	
 	@Column(name = "BIRTH_DATE")
-	private String birthDate;
+	private Date birthDate;
 	
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "USER_AUTHORITY", joinColumns = {
@@ -61,18 +59,13 @@ public class LibraryUser {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public String getStatus() {
+	public int getStatus() {
 		return status;
 	}
-	public void setStatus(String status) {
+	public void setStatus(int status) {
 		this.status = status;
 	}
-	public long getCreatedBy() {
-		return createdBy;
-	}
-	public void setCreatedBy(long createdBy) {
-		this.createdBy = createdBy;
-	}
+
 	public String getPid() {
 		return pid;
 	}
@@ -85,10 +78,10 @@ public class LibraryUser {
 	public void setAuthorities(List<Authority> authorities) {
 		this.authorities = authorities;
 	}
-	public String getBirthDate() {
+	public Date getBirthDate() {
 		return birthDate;
 	}
-	public void setBirthDate(String birthDate) {
+	public void setBirthDate(Date birthDate) {
 		this.birthDate = birthDate;
 	}
 	
