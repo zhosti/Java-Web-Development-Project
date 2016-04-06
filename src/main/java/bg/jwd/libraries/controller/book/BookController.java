@@ -1,13 +1,14 @@
 package bg.jwd.libraries.controller.book;
 
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.List;
 import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -23,6 +24,7 @@ import bg.jwd.libraries.service.book.BookService;
 import bg.jwd.libraries.service.user.UserService;
 
 @Controller
+@Secured("ROLE_ADMIN")
 public class BookController {
 	
 	@Autowired
@@ -31,6 +33,7 @@ public class BookController {
 	@Autowired
 	private UserService userService;
 	
+	@Secured("ROLE_USER")
 	@RequestMapping(value = "/books", method = RequestMethod.GET)
 	public String home(Locale locale, Model model) {
 
@@ -38,6 +41,7 @@ public class BookController {
 		String name = auth.getName();
 		LibraryUser user = userService.getUserByUsername(name);
 		
+		model.addAttribute("user", user);
 		model.addAttribute("username", name);
 		model.addAttribute("books",bookService.getBooks());
 		model.addAttribute("id", user.getId());
@@ -107,5 +111,42 @@ public class BookController {
 		bookService.deleteBook(book.getId());
 		
 		return "redirect:"+ "/books";
+	}
+	
+	@Secured("ROLE_USER")
+	@RequestMapping(value = "/lendBookPage/{id}", method = RequestMethod.GET)
+    public String loadLendBook(@PathVariable long id, 
+    	    HttpServletRequest request, Model model) {
+		Book book = bookService.getBookById(id);
+		model.addAttribute("book", book);
+    
+		return "lendBookForm";
+	}
+	
+	@Secured("ROLE_USER")
+	@RequestMapping(value = "/lendBook/{id}", method = RequestMethod.POST)
+	public String lendBook(HttpServletRequest request, @PathVariable int id, Model model)
+			throws ParseException {
+
+		Book book = bookService.getBookById(id);
+		model.addAttribute("book", book);
+		
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String name = auth.getName();
+		
+		LibraryUser user = userService.getUserByUsername(name);
+		String landDate = request.getParameter("lend-date");
+		String endDate = request.getParameter("return-date");
+		
+		java.util.Date date = new SimpleDateFormat("yyyy-MM-dd").parse(landDate);
+		java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+		
+		java.util.Date date1 = new SimpleDateFormat("yyyy-MM-dd").parse(endDate);
+		java.sql.Date sqlDate1 = new java.sql.Date(date1.getTime());	
+		
+		Boolean isUserAddedToRol = this.bookService.lendBook(user.getId(), id, sqlDate, sqlDate1);
+
+		return "redirect:" + "/books";
+		
 	}
 }

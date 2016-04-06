@@ -1,5 +1,6 @@
 package bg.jwd.libraries.dao.book;
 
+import java.sql.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -60,8 +61,21 @@ public class BookDaoImpl implements BookDao{
 	@Transactional
 	public boolean deleteBook(long id) {
 		entityManager.createNativeQuery("DELETE FROM BOOKS WHERE ID=?")
-		.setParameter(1, id)
-		.executeUpdate();
+			.setParameter(1, id)
+			.executeUpdate();
+		return true;
+	}
+	
+	@Override
+	@Transactional
+	public boolean lendBook(long userId, long bookId, Date lendDate, Date endDate) {
+		entityManager.createNativeQuery("INSERT INTO BOOK_USER ( BOOK_ID, USER_ID, LENDING_DATE, RETURN_DATE)" + "VALUES(?, ?, ?, ?)")
+			.setParameter(1, bookId)
+			.setParameter(2,userId)
+			.setParameter(3, lendDate)
+			.setParameter(4, endDate)
+			.executeUpdate();
+
 		return true;
 	}
 	

@@ -48,6 +48,7 @@ public class HomeController {
 		String name = auth.getName();
 		LibraryUser user = userService.getUserByUsername(name);
 		
+		model.addAttribute("user", user);
 		model.addAttribute("username", name);
 		model.addAttribute("id", user.getId());
 		return "home";

@@ -1,5 +1,6 @@
 package bg.jwd.libraries.service.book;
 
+import java.sql.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +40,12 @@ public class BookServiceImpl implements BookService {
 	@Override
 	public boolean deleteBook(long id) {
 		bookDao.deleteBook(id);
+		return true;
+	}
+
+	@Override
+	public boolean lendBook(long userId, long bookId, Date lendDate, Date endDate) {
+		bookDao.lendBook(userId, bookId, lendDate, endDate);
 		return true;
 	}
 }

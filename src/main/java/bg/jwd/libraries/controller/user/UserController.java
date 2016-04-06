@@ -11,6 +11,7 @@ import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -20,12 +21,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import bg.jwd.libraries.entity.book.Book;
 import bg.jwd.libraries.entity.user.LibraryUser;
 import bg.jwd.libraries.service.authority.AuthorityService;
 import bg.jwd.libraries.service.user.UserService;
 
 @Controller
+@Secured("ROLE_ADMIN")
 public class UserController {
 	
 	@Autowired

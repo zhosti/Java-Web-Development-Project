@@ -66,23 +66,48 @@
         <td>${b.author }</td>
         <td>${b.yearOfPublishing }</td>
         <td>
-	        <form:form name="update" class="form-update" id="update-form" action="/libraries/editBook/${b.getId()}" modelAttribute="books" method="GET">
-				<button type="submit" class="btn btn-success">Update</button>
-			</form:form>
+        <c:forEach var="a" items="${user.getAuthorities()}">
+        	<c:choose>
+				<c:when test="${a.getAuthority() == 'ROLE_ADMIN' }">
+					<form:form name="update" class="form-update" id="update-form" action="/libraries/editBook/${b.getId()}" modelAttribute="books" method="GET">
+						<button type="submit" class="btn btn-success">Update</button>
+					</form:form>
+        		</c:when>
+			</c:choose>
+		</c:forEach>	
+	        
         </td>
         <td>
-	        <form:form name="delete" class="form-delete" id="update-form" action="/libraries/delete/${b.getId()}" modelAttribute="books" method="POST">
-				<button type="submit" class="btn btn-danger">Delete</button>
-			</form:form>
+         <c:forEach var="a" items="${user.getAuthorities()}">
+        	<c:choose>
+				<c:when test="${a.getAuthority() == 'ROLE_ADMIN' }">
+					<form:form name="delete" class="form-delete" id="update-form" action="/libraries/delete/${b.getId()}" modelAttribute="books" method="POST">
+					<button type="submit" class="btn btn-danger">Delete</button>
+				</form:form>
+        		</c:when>
+			</c:choose>
+		</c:forEach>	    
+        </td>
+        <td>
+        	<form action="/libraries/lendBookPage/${b.getId() }">
+			  		<button type="submit" class="btn btn-primary">Lend Book</button>
+			</form>
         </td>
       </tr>
       </c:forEach>
     </tbody>
     </c:if>
   </table>
-	<form action="/libraries/addBook">
-  		<button type="submit" class="btn btn-primary">Add Book</button>
-	</form>
+  <c:forEach var="a" items="${user.getAuthorities()}">
+       	<c:choose>
+			<c:when test="${a.getAuthority() == 'ROLE_ADMIN' }">
+				<form action="/libraries/addBook">
+			  		<button type="submit" class="btn btn-primary">Add Book</button>
+				</form>
+       		</c:when>
+		</c:choose>
+  </c:forEach>	
+	
 </div>
 </body>
 </html>

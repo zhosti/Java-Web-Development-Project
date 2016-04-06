@@ -20,6 +20,6 @@ public class AuthorityDaoImpl implements AuthorityDao{
 			.setParameter(2, authorityId)
 			.executeUpdate();
 
-		return true;	}
-	
+		return true;	
+	}
 }

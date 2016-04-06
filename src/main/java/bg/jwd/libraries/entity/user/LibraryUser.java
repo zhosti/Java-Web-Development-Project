@@ -12,6 +12,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import bg.jwd.libraries.entity.book.Book;
+
 @Entity
 @Table(name = "LIBRARY_USERS")
 public class LibraryUser {
@@ -41,6 +43,12 @@ public class LibraryUser {
 					@JoinColumn(name = "AUTHORITY_ID", referencedColumnName = "ID") })
 	private List<Authority> authorities;
 
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "BOOK_USER", joinColumns = {
+			@JoinColumn(name = "BOOK_ID", referencedColumnName = "ID") }, inverseJoinColumns = {
+					@JoinColumn(name = "USER_ID", referencedColumnName = "ID") })
+	private List<Book> books;
+	
 	public long getId() {
 		return id;
 	}
@@ -83,6 +91,12 @@ public class LibraryUser {
 	}
 	public void setBirthDate(Date birthDate) {
 		this.birthDate = birthDate;
+	}
+	public List<Book> getBooks() {
+		return books;
+	}
+	public void setBooks(List<Book> books) {
+		this.books = books;
 	}
 	
 }
