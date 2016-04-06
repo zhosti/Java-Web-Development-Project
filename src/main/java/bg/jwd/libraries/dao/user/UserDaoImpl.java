@@ -58,4 +58,45 @@ public class UserDaoImpl implements UserDao{
 
 		return users.size() != 0 ? users.get(0) : null;
 	}
+	
+	@Override
+	public List<LibraryUser> getUsers() {
+		Query query = entityManager.createNativeQuery("SELECT * FROM LIBRARY_USERS", LibraryUser.class);
+		List<LibraryUser> users = query.getResultList();
+
+		return users;
+	}
+	@Override
+	public LibraryUser getUserById(Long id) {
+		Query query = entityManager.createNativeQuery("SELECT * FROM LIBRARY_USERS WHERE id = ?", LibraryUser.class);
+		query.setParameter(1, id);
+
+		List<LibraryUser> users = query.getResultList();
+
+		return users != null ? users.get(0) : null;
+	}
+	
+	@Override
+	@Transactional
+	public boolean adminEditUserById(Long id, int status) {
+		entityManager.createNativeQuery("UPDATE LIBRARY_USERS SET STATUS=? WHERE id=?")
+			.setParameter(1, status)
+			.setParameter(2, id)
+			.executeUpdate();
+
+		return true;
+	}
+	
+	@Override
+	@Transactional
+	public boolean editMyProfile(long id, LibraryUser user) {
+		entityManager.createNativeQuery("UPDATE LIBRARY_USERS SET USERNAME=?, PASSWORD=?, BIRTH_DATE=? WHERE id=?")
+		.setParameter(1, user.getUsername())
+		.setParameter(2, user.getPassword())
+		.setParameter(3, user.getBirthDate())
+		.setParameter(4, id)
+		.executeUpdate();
+		
+		return true;
+	}
 }

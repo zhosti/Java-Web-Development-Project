@@ -1,6 +1,7 @@
 package bg.jwd.libraries.service.user;
 
 import java.text.ParseException;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,5 +22,27 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public LibraryUser getUserByUsername(String username) {
 		return userDao.getUserByUsername(username);
+	}
+
+	@Override
+	public List<LibraryUser> getUsers() {
+		return userDao.getUsers();
+	}
+
+	@Override
+	public LibraryUser getUserById(long id) {
+		return userDao.getUserById(id);
+	}
+
+	@Override
+	public boolean adminEditUserById(Long id, int status) {
+		userDao.adminEditUserById(id, status);
+		return true;
+	}
+
+	@Override
+	public boolean editMyProfile(long id, LibraryUser user) {
+		userDao.editMyProfile(id, user);
+		return true;
 	}
 }
