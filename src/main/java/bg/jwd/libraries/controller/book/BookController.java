@@ -43,10 +43,10 @@ public class BookController {
 		String name = auth.getName();
 		LibraryUser user = userService.getUserByUsername(name);
 		
-		model.addAttribute("user", user);
 		model.addAttribute("username", name);
-		model.addAttribute("books",bookService.getBooks());
 		model.addAttribute("id", user.getId());
+		model.addAttribute("user", user);
+		model.addAttribute("books",bookService.getBooks());
 		
 		return "bookRegister";
 	}
@@ -56,7 +56,11 @@ public class BookController {
 
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String name = auth.getName();
+		LibraryUser user = userService.getUserByUsername(name);
+		
 		model.addAttribute("username", name);
+		model.addAttribute("id", user.getId());
+		model.addAttribute("user", user);
 
 		return "addBookForm";
 	}
@@ -75,8 +79,15 @@ public class BookController {
 	}
 	
 	@RequestMapping(value = "/editBook/{id}", method = RequestMethod.GET)
-    public String getEdit(@PathVariable long id, 
-    	    HttpServletRequest request, Model model) {
+    public String getEdit(@PathVariable long id, HttpServletRequest request, Model model) {		
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String name = auth.getName();
+		LibraryUser user = userService.getUserByUsername(name);
+		
+		model.addAttribute("username", name);
+		model.addAttribute("id", user.getId());
+		model.addAttribute("user", user);
+
 		Book book = bookService.getBookById(id);
 		model.addAttribute("book", book);
     
@@ -117,8 +128,15 @@ public class BookController {
 	
 	@Secured("ROLE_USER")
 	@RequestMapping(value = "/lendBookPage/{id}", method = RequestMethod.GET)
-    public String loadLendBook(@PathVariable long id, 
-    	    HttpServletRequest request, Model model) {
+    public String loadLendBook(@PathVariable long id, HttpServletRequest request, Model model) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String name = auth.getName();
+		LibraryUser user = userService.getUserByUsername(name);
+		
+		model.addAttribute("username", name);
+		model.addAttribute("id", user.getId());
+		model.addAttribute("user", user);
+
 		Book book = bookService.getBookById(id);
 		model.addAttribute("book", book);
     
@@ -146,7 +164,7 @@ public class BookController {
 		java.util.Date date1 = new SimpleDateFormat("yyyy-MM-dd").parse(endDate);
 		java.sql.Date sqlDate1 = new java.sql.Date(date1.getTime());	
 		
-		Boolean isUserAddedToRol = this.bookService.lendBook(user.getId(), id, sqlDate, sqlDate1);
+		this.bookService.lendBook(user.getId(), id, sqlDate, sqlDate1);
 
 		return "redirect:" + "/books";
 		
@@ -155,6 +173,13 @@ public class BookController {
 	@Secured("ROLE_USER")
 	@RequestMapping(value = "/allLends", method = RequestMethod.GET)
 	public String alllendsBookPage(Model model) throws ParseException {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String name = auth.getName();
+		LibraryUser user = userService.getUserByUsername(name);
+		
+		model.addAttribute("username", name);
+		model.addAttribute("id", user.getId());
+		model.addAttribute("user", user);
 
 		List<LendInfo> lendsBook = this.bookService.getAllLendBooks();
 
@@ -167,7 +192,14 @@ public class BookController {
 	@RequestMapping(value = "/editBookLend/{bookId}/{id}", method = RequestMethod.GET)
 	public String loadEditBookLend(@PathVariable("bookId") long bookId, @PathVariable("id") long lendId, Model model)
 			throws ParseException {
-
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String name = auth.getName();
+		LibraryUser user = userService.getUserByUsername(name);
+		
+		model.addAttribute("username", name);
+		model.addAttribute("id", user.getId());
+		model.addAttribute("user", user);
+		
 		Book book = this.bookService.getBookById(bookId);
 		LendInfo lendBook = this.bookService.getLendBook(lendId);
 

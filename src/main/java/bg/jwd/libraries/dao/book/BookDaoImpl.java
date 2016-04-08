@@ -151,7 +151,7 @@ public class BookDaoImpl implements BookDao{
 		return true;
 	}
 	
-	private String timestampToDate(Timestamp timestamp) {
+	public static String timestampToDate(Timestamp timestamp) {
 		String dateFormat = new SimpleDateFormat("yyyy-MM-dd").format(timestamp);
 
 		return dateFormat;

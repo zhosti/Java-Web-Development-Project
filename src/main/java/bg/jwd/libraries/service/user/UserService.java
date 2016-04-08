@@ -3,6 +3,7 @@ package bg.jwd.libraries.service.user;
 import java.text.ParseException;
 import java.util.List;
 
+import bg.jwd.libraries.dto.lend.MyLend;
 import bg.jwd.libraries.entity.user.LibraryUser;
 
 public interface UserService {
@@ -20,5 +21,5 @@ public interface UserService {
 	
 	boolean delteProfile(long id);
 	
-	
+	List<MyLend> getMyLends(long id);
 }

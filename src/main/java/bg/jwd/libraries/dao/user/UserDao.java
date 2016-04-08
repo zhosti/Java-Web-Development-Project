@@ -3,6 +3,7 @@ package bg.jwd.libraries.dao.user;
 import java.text.ParseException;
 import java.util.List;
 
+import bg.jwd.libraries.dto.lend.MyLend;
 import bg.jwd.libraries.entity.user.LibraryUser;
 
 public interface UserDao {
@@ -21,4 +22,6 @@ public interface UserDao {
 	boolean editMyProfile(long id, LibraryUser user);
 	
 	boolean deleteProfile(long id);
+	
+	List<MyLend> getMyLends(long userId);
 }

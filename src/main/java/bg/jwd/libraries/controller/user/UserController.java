@@ -41,8 +41,12 @@ public class UserController {
 
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String name = auth.getName();
+		LibraryUser user = userService.getUserByUsername(name);
+		
 		model.addAttribute("username", name);
-
+		model.addAttribute("id", user.getId());
+		model.addAttribute("user", user);
+		
 		return "addUserForm";
 	}
 	
@@ -67,7 +71,7 @@ public class UserController {
 			Boolean isAdded = this.userService.addUser(user);
 			LibraryUser dbUser = this.userService.getUserByUsername(username);
 			
-			Boolean isUserAddedToRol = this.authorityService.addUserAuthority(dbUser.getId(), role);
+			this.authorityService.addUserAuthority(dbUser.getId(), role);
 
 			if (isAdded == true) {
 				return "redirect:" + "/books";
@@ -90,6 +94,7 @@ public class UserController {
 		
 		model.addAttribute("username", name);
 		model.addAttribute("id", user.getId());
+		model.addAttribute("user", user);
 		
 		return "users";
 	}
@@ -97,16 +102,15 @@ public class UserController {
 	@RequestMapping(value = "/adminEditUser" + "/{id}", method = RequestMethod.GET)
 	public String editUserPage(@PathVariable("id") long userId, Model model) {
 		
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String name = auth.getName();
 		LibraryUser user = this.userService.getUserById(userId);
 
-		if (user != null) {
-			model.addAttribute("user", user);
+		model.addAttribute("username", name);
+		model.addAttribute("id", user.getId());
+		model.addAttribute("user", user);
 
-			return "adminEditPage";
-
-		} else {
-			return "redirect:" + "/home";
-		}
+		return "adminEditPage";
 	}
 	
 	@RequestMapping(value = "/editUser" + "/{id}", method = RequestMethod.POST)
@@ -123,19 +127,17 @@ public class UserController {
 		}
 	}
 	
-	@RequestMapping(value = "/editProfile" + "/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/editProfile/{id}", method = RequestMethod.GET)
 	public String editProfile(@PathVariable("id") long userId, Model model) {
-		
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String name = auth.getName();
 		LibraryUser user = userService.getUserById(userId);
 
-		if (user != null) {
-			model.addAttribute("user", user);
+		model.addAttribute("username", name);
+		model.addAttribute("id", user.getId());
+		model.addAttribute("user", user);
 
-			return "editUserProfile";
-
-		} else {
-			return "redirect:" + "/home";
-		}
+		return "editUserProfile";
 	}
 	
 	@RequestMapping(value = "/editUserProfile/{id}", method = RequestMethod.POST)
@@ -185,5 +187,20 @@ public class UserController {
 		}
 
 		user.setPassword(hashtext.toString());
+	}
+	
+	@Secured("ROLE_USER")
+	@RequestMapping(value = "/myLends", method = RequestMethod.GET)
+	public String myLends(Model model) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String name = auth.getName();
+		LibraryUser user = userService.getUserByUsername(name);
+
+		model.addAttribute("users", userService.getMyLends(user.getId()));
+		model.addAttribute("username", name);
+		model.addAttribute("id", user.getId());
+		model.addAttribute("user", user);
+
+		return "myLendsPage";
 	}
 }

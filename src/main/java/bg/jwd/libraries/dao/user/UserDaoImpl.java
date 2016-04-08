@@ -1,7 +1,11 @@
 package bg.jwd.libraries.dao.user;
 
+import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -15,6 +19,9 @@ import javax.persistence.criteria.Root;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import bg.jwd.libraries.dao.book.BookDaoImpl;
+import bg.jwd.libraries.dto.lend.LendInfo;
+import bg.jwd.libraries.dto.lend.MyLend;
 import bg.jwd.libraries.entity.user.LibraryUser;
 
 @Repository
@@ -112,5 +119,32 @@ public class UserDaoImpl implements UserDao{
 			.executeUpdate();
 		
 		return true;
+	}
+	@Override
+	public List<MyLend> getMyLends(long id) {
+		Query getLendBookQuery = entityManager.createNativeQuery(
+				"SELECT u.USERNAME, b.NAME, b.AUTHOR, bu.LENDING_DATE, bu.RETURN_DATE FROM BOOKS b"
+						+ " JOIN BOOK_USER bu" + " ON b.ID = bu.BOOK_ID" + " JOIN LIBRARY_USERS u" + " ON bu.USER_ID = u.ID WHERE u.ID = ?")
+				.setParameter(1, id);
+
+		List<String> queryResult = getLendBookQuery.getResultList();
+		List<MyLend> userLends = new ArrayList<MyLend>();
+		Iterator i = queryResult.iterator();
+		
+		while(i.hasNext()) {
+			Object[] values = (Object[]) i.next();
+
+			String username = (String) values[0];
+			String bookName = (String) values[1];
+			String author = (String) values[2];
+			String dateOfLending = BookDaoImpl.timestampToDate((Timestamp) values[3]);
+			String dateOfReturn = BookDaoImpl.timestampToDate((Timestamp) values[4]);
+			MyLend myLend = new MyLend(username, bookName, author,
+					dateOfLending, dateOfReturn);
+
+			userLends.add(myLend);
+		}
+
+		return userLends;
 	}
 }

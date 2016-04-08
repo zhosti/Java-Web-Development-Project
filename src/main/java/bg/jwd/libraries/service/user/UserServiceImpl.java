@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import bg.jwd.libraries.dao.user.UserDao;
+import bg.jwd.libraries.dto.lend.MyLend;
 import bg.jwd.libraries.entity.user.LibraryUser;
 
 @Service
@@ -50,5 +51,10 @@ public class UserServiceImpl implements UserService{
 	public boolean delteProfile(long id) {
 		userDao.deleteProfile(id);
 		return true;
+	}
+
+	@Override
+	public List<MyLend> getMyLends(long id) {
+		return userDao.getMyLends(id);
 	}
 }

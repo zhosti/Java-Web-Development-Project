@@ -2,6 +2,7 @@
     pageEncoding="ISO-8859-1"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="ct" uri="http://jwd.bg/tags" %>
     
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -23,91 +24,67 @@
 </style>
 </head>
 <body>
-<nav class="navbar navbar-inverse">
-  <div class="container-fluid">
-    <!-- Brand and toggle get grouped for better mobile display -->
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="/home">Library</a>
-    </div>
+	<ct:Header username="${username}" id="${id }"></ct:Header>
 	
-    <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <ul class="nav navbar-nav">
-        <li class="active"><a href="/libraries/home">Home <span class="sr-only">(current)</span></a></li>
-        <li><a href="/libraries/books">Books</a></li>
-        <li><a href="/libraries/users">Users</a></li>
-        <li id="greeting"><a href="/libraries/editProfile/${id }">Hello, <c:out value="${username}" /></a><li>
-        <li id="logout"><a href="logout">Logout</a>
-      </ul>  
-    </div><!-- /.navbar-collapse -->
-  </div><!-- /.container-fluid -->
-</nav>
-
-<div class="container">
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Author</th>
-        <th>Year of publishing</th>
-      </tr>
-    </thead>
-    <c:if test="${not empty books}">
-    <tbody>
-    <c:forEach var="b" items="${books}">
-      <tr>
-        <td>${b.name }</td>
-        <td>${b.author }</td>
-        <td>${b.yearOfPublishing }</td>
-        <td>
-        <c:forEach var="a" items="${user.getAuthorities()}">
-        	<c:choose>
-				<c:when test="${a.getAuthority() == 'ROLE_ADMIN' }">
-					<form:form name="update" class="form-update" id="update-form" action="/libraries/editBook/${b.getId()}" modelAttribute="books" method="GET">
-						<button type="submit" class="btn btn-success">Update</button>
+	<div class="container">
+	  <table class="table table-striped">
+	    <thead>
+	      <tr>
+	        <th>Name</th>
+	        <th>Author</th>
+	        <th>Year of publishing</th>
+	      </tr>
+	    </thead>
+	    <c:if test="${not empty books}">
+	    <tbody>
+	    <c:forEach var="b" items="${books}">
+	      <tr>
+	        <td>${b.name }</td>
+	        <td>${b.author }</td>
+	        <td>${b.yearOfPublishing }</td>
+	        <td>
+	        <c:forEach var="a" items="${user.getAuthorities()}">
+	        	<c:choose>
+					<c:when test="${a.getAuthority() == 'ROLE_ADMIN' }">
+						<form:form name="update" class="form-update" id="update-form" action="/libraries/editBook/${b.getId()}" modelAttribute="books" method="GET">
+							<button type="submit" class="btn btn-success">Update</button>
+						</form:form>
+	        		</c:when>
+				</c:choose>
+			</c:forEach>	
+		        
+	        </td>
+	        <td>
+	         <c:forEach var="a" items="${user.getAuthorities()}">
+	        	<c:choose>
+					<c:when test="${a.getAuthority() == 'ROLE_ADMIN' }">
+						<form:form name="delete" class="form-delete" id="update-form" action="/libraries/delete/${b.getId()}" modelAttribute="books" method="POST">
+						<button type="submit" class="btn btn-danger">Delete</button>
 					</form:form>
-        		</c:when>
-			</c:choose>
-		</c:forEach>	
-	        
-        </td>
-        <td>
-         <c:forEach var="a" items="${user.getAuthorities()}">
-        	<c:choose>
-				<c:when test="${a.getAuthority() == 'ROLE_ADMIN' }">
-					<form:form name="delete" class="form-delete" id="update-form" action="/libraries/delete/${b.getId()}" modelAttribute="books" method="POST">
-					<button type="submit" class="btn btn-danger">Delete</button>
-				</form:form>
-        		</c:when>
-			</c:choose>
-		</c:forEach>	    
-        </td>
-        <td>
-        	<form action="/libraries/lendBookPage/${b.getId() }">
-			  		<button type="submit" class="btn btn-primary">Lend Book</button>
-			</form>
-        </td>
-      </tr>
-      </c:forEach>
-    </tbody>
-    </c:if>
-  </table>
-  <c:forEach var="a" items="${user.getAuthorities()}">
-       	<c:choose>
-			<c:when test="${a.getAuthority() == 'ROLE_ADMIN' }">
-				<form action="/libraries/addBook">
-			  		<button type="submit" class="btn btn-primary">Add Book</button>
+	        		</c:when>
+				</c:choose>
+			</c:forEach>	    
+	        </td>
+	        <td>
+	        	<form action="/libraries/lendBookPage/${b.getId() }">
+				  		<button type="submit" class="btn btn-primary">Lend Book</button>
 				</form>
-       		</c:when>
-		</c:choose>
-  </c:forEach>	
-	
-</div>
+	        </td>
+	      </tr>
+	      </c:forEach>
+	    </tbody>
+	    </c:if>
+	  </table>
+	  <c:forEach var="a" items="${user.getAuthorities()}">
+	       	<c:choose>
+				<c:when test="${a.getAuthority() == 'ROLE_ADMIN' }">
+					<form action="/libraries/addBook">
+				  		<button type="submit" class="btn btn-primary">Add Book</button>
+					</form>
+	       		</c:when>
+			</c:choose>
+	  </c:forEach>	
+	</div>
+	<ct:Footer></ct:Footer>
 </body>
 </html>
