@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import bg.jwd.libraries.dao.book.BookDao;
+import bg.jwd.libraries.dto.lend.LendInfo;
 import bg.jwd.libraries.entity.book.Book;
 
 @Service
@@ -46,6 +47,22 @@ public class BookServiceImpl implements BookService {
 	@Override
 	public boolean lendBook(long userId, long bookId, Date lendDate, Date endDate) {
 		bookDao.lendBook(userId, bookId, lendDate, endDate);
+		return true;
+	}
+
+	@Override
+	public List<LendInfo> getAllLendBooks() {
+		
+		return bookDao.getAllLendBooks();
+	}
+
+	public LendInfo getLendBook(long id){
+		return bookDao.getLendBook(id);
+	}
+	
+	@Override
+	public boolean editLendBook(long lendId, Date returnDate) {
+		bookDao.editLendBook(lendId, returnDate);
 		return true;
 	}
 }

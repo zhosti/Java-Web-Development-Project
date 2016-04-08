@@ -3,6 +3,7 @@ package bg.jwd.libraries.service.book;
 import java.sql.Date;
 import java.util.List;
 
+import bg.jwd.libraries.dto.lend.LendInfo;
 import bg.jwd.libraries.entity.book.Book;
 
 public interface BookService {
@@ -17,4 +18,10 @@ public interface BookService {
 	boolean deleteBook(long id);
 	
 	boolean lendBook(long userId, long bookId, Date lendDate, Date endDate);
+	
+	List<LendInfo> getAllLendBooks();
+	
+	LendInfo getLendBook(long id);
+	
+	boolean editLendBook(long lendId, Date returnDate);
 }

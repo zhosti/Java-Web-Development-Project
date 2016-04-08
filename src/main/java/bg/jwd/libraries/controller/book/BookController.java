@@ -3,6 +3,7 @@ package bg.jwd.libraries.controller.book;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import bg.jwd.libraries.dto.lend.LendInfo;
 import bg.jwd.libraries.entity.book.Book;
 import bg.jwd.libraries.entity.user.LibraryUser;
 import bg.jwd.libraries.service.book.BookService;
@@ -148,5 +150,54 @@ public class BookController {
 
 		return "redirect:" + "/books";
 		
+	}
+	
+	@Secured("ROLE_USER")
+	@RequestMapping(value = "/allLends", method = RequestMethod.GET)
+	public String alllendsBookPage(Model model) throws ParseException {
+
+		List<LendInfo> lendsBook = this.bookService.getAllLendBooks();
+
+		model.addAttribute("lendBooks", lendsBook);
+
+		return "allLendBooks";
+	}
+
+	@Secured("ROLE_ADMIN")
+	@RequestMapping(value = "/editBookLend/{bookId}/{id}", method = RequestMethod.GET)
+	public String loadEditBookLend(@PathVariable("bookId") long bookId, @PathVariable("id") long lendId, Model model)
+			throws ParseException {
+
+		Book book = this.bookService.getBookById(bookId);
+		LendInfo lendBook = this.bookService.getLendBook(lendId);
+
+		if (book != null && lendBook != null) {
+			model.addAttribute("book", book);
+			model.addAttribute("lendBook", lendBook);
+
+			return "editBookLend";
+
+		} else {
+			return "redirect:" + "/books";
+		}
+	}
+	
+	@Secured("ROLE_ADMIN")
+	@RequestMapping(value = "editLend/{bookId}/{id}", method = RequestMethod.POST)
+	public String editBookLend(@PathVariable("id") long lendId, Model model, HttpServletRequest request)
+			throws ParseException {
+
+		String dateOfReturn = request.getParameter("return-date");
+
+		java.util.Date date = new SimpleDateFormat("yyyy-MM-dd").parse(dateOfReturn);
+		java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+
+		Boolean isEditedLendBook = this.bookService.editLendBook(lendId, sqlDate);
+
+		if (isEditedLendBook) {
+			return "redirect:" + "/allLends";
+		} else {
+			return "bookRegister";
+		}
 	}
 }
