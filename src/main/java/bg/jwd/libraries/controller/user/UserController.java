@@ -127,6 +127,7 @@ public class UserController {
 		}
 	}
 	
+	@Secured("ROLE_USER")
 	@RequestMapping(value = "/editProfile/{id}", method = RequestMethod.GET)
 	public String editProfile(@PathVariable("id") long userId, Model model) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -140,6 +141,7 @@ public class UserController {
 		return "editUserProfile";
 	}
 	
+	@Secured("ROLE_USER")
 	@RequestMapping(value = "/editUserProfile/{id}", method = RequestMethod.POST)
 	public String editUserProfile(@PathVariable int id, 
 	    HttpServletRequest request, Model model) throws ParseException, UnsupportedEncodingException, NoSuchAlgorithmException {
