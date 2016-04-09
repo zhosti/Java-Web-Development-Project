@@ -66,7 +66,7 @@ public class BookController {
 	}
 	
 	@RequestMapping(value = "/createBook", method = RequestMethod.POST)
-	public String registerUser(Model model,HttpServletRequest request, @ModelAttribute("book") Book book) {
+	public String registerBook(Model model,HttpServletRequest request, @ModelAttribute("book") Book book) {
 		String name = request.getParameter("book-name");
 		String author = request.getParameter("author");
 		
@@ -75,7 +75,7 @@ public class BookController {
 		
 		bookService.addBook(book);
 				
-		return "bookRegister";
+		return "redirect:" + "/books";
 	}
 	
 	@RequestMapping(value = "/editBook/{id}", method = RequestMethod.GET)
@@ -145,7 +145,7 @@ public class BookController {
 	
 	@Secured("ROLE_USER")
 	@RequestMapping(value = "/lendBook/{id}", method = RequestMethod.POST)
-	public String lendBook(HttpServletRequest request, @PathVariable int id, Model model)
+	public String lendBook(HttpServletRequest request, @PathVariable long id, Model model)
 			throws ParseException {
 
 		Book book = bookService.getBookById(id);
@@ -164,7 +164,7 @@ public class BookController {
 		java.util.Date date1 = new SimpleDateFormat("yyyy-MM-dd").parse(endDate);
 		java.sql.Date sqlDate1 = new java.sql.Date(date1.getTime());	
 		
-		this.bookService.lendBook(user.getId(), id, sqlDate, sqlDate1);
+		this.bookService.lendBook(user.getId(), book.getId(), sqlDate, sqlDate1);
 
 		return "redirect:" + "/books";
 		

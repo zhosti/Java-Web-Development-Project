@@ -28,9 +28,6 @@ public class Book {
 	
 	@Column(name="YEAR_OF_PUBLISHING")
 	private Date yearOfPublishing;
-
-	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "books")
-	private List<LibraryUser> users;
 	
 	public long getId() {
 		return id;
@@ -62,13 +59,5 @@ public class Book {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public List<LibraryUser> getUsers() {
-		return users;
-	}
-
-	public void setUsers(List<LibraryUser> users) {
-		this.users = users;
 	}
 }

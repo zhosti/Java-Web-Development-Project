@@ -99,7 +99,7 @@ public class UserController {
 		return "users";
 	}
 	
-	@RequestMapping(value = "/adminEditUser" + "/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/adminEditUser/{id}", method = RequestMethod.GET)
 	public String editUserPage(@PathVariable("id") long userId, Model model) {
 		
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -113,7 +113,7 @@ public class UserController {
 		return "adminEditPage";
 	}
 	
-	@RequestMapping(value = "/editUser" + "/{id}", method = RequestMethod.POST)
+	@RequestMapping(value = "/editUser/{id}", method = RequestMethod.POST)
 	public String editUser(@PathVariable("id") long userId, Model model, HttpServletRequest request) {
 
 		int status = Integer.parseInt(request.getParameter("status_select"));

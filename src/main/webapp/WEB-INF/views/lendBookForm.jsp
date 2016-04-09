@@ -15,7 +15,7 @@
 <body>
 	<ct:Header username="${username}" id="${id }"></ct:Header>
 	
-	<form:form action="/libraries/lendBook/${id}" method="POST" modelAttibute="book">
+	<form:form action="/libraries/lendBook/${book.getId()}" method="POST" modelAttibute="book">
 	  <fieldset class="form-group">
 	    <label for="lend-date">Lend Date</label>
 	    <input type="date" name="lend-date" class="form-control" id="lend-date" placeholder="Lend Date">
