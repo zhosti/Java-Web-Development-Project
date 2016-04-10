@@ -114,6 +114,10 @@ public class UserDaoImpl implements UserDao{
 			.setParameter(1, id)
 			.executeUpdate();
 		
+		entityManager.createNativeQuery("DELETE FROM BOOK_USER WHERE USER_ID = ?")
+			.setParameter(1, id)
+			.executeUpdate();
+		
 		entityManager.createNativeQuery("DELETE FROM LIBRARY_USERS WHERE ID=?")
 			.setParameter(1, id)
 			.executeUpdate();
