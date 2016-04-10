@@ -55,7 +55,7 @@ public class UserController {
 			throws UnsupportedEncodingException, NoSuchAlgorithmException, ParseException {
 
 		String username = request.getParameter("username");
-		int role = Integer.parseInt(request.getParameter("role"));
+		String role[] = request.getParameterValues("role");
 		String birthDate = request.getParameter("dateOfBirth");
 		
 		java.util.Date date = new SimpleDateFormat("yyyy-MM-dd").parse(birthDate);
@@ -71,8 +71,10 @@ public class UserController {
 			Boolean isAdded = this.userService.addUser(user);
 			LibraryUser dbUser = this.userService.getUserByUsername(username);
 			
-			this.authorityService.addUserAuthority(dbUser.getId(), role);
-
+			for (int i = 0; i < role.length; i++) {
+				this.authorityService.addUserAuthority(dbUser.getId(), Integer.parseInt(role[i]));
+			}
+			
 			if (isAdded == true) {
 				return "redirect:" + "/books";
 

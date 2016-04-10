@@ -25,10 +25,13 @@
   			<option value="1" selected="selected">Active</option>
 		</select>
 		<label for="user_role">Role</label>
-	 	<select class="form-control" name="role" id="user_role">
-		    <option value="2" selected="selected">User</option>
-  			<option value="3">Admin</option>
-		</select>
+	 
+		<div class="checkbox">
+		  <label><input type="checkbox" name="role" value="2">User</label>
+		</div>
+		<div class="checkbox">
+		  <label><input type="checkbox" name="role" value="1">Admin</label>
+		</div>
 		<label for="password">Password</label>
         <input type="password" id="password" name="password" class="form-control" required>
         
